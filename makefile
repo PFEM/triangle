@@ -71,9 +71,10 @@ CC = cc
 #
 # An example CSWITCHES line is:
 #
-#   CSWITCHES = -O -DNO_TIMER -DLINUX -I/usr/X11R6/include -L/usr/X11R6/lib
+#   CSWITCHES = -O -DNO_TIMER -DLINUX -I/usr/X11R6/include -L/usr/X11R6/lib -g
 
-CSWITCHES = -O -DLINUX -I/usr/X11R6/include -L/usr/X11R6/lib
+//CSWITCHES = -O -DLINUX -I/usr/X11R6/include -L/usr/X11R6/lib 
+CSWITCHES = -O -fPIC -pthread  -DLINUX -I/usr/X11R6/include -L/usr/X11R6/lib -g -DSELF_CHECK
 
 # TRILIBDEFS is a list of definitions used to compile an object code version
 #   of Triangle (triangle.o) to be called by another program.  The file
@@ -113,4 +114,4 @@ $(BIN)showme: $(SRC)showme.c
 	$(CC) $(CSWITCHES) -o $(BIN)showme $(SRC)showme.c -lX11
 
 distclean:
-	$(RM) $(BIN)triangle $(BIN)triangle.o $(BIN)tricall $(BIN)showme
+	$(RM) -f $(BIN)triangle $(BIN)triangle.o $(BIN)tricall $(BIN)showme

@@ -1,8 +1,28 @@
-cmake_minimum_required(VERSION 2.8.12)
-project(triangle)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-add_library(triangle STATIC triangle.c)
-target_compile_definitions(triangle PRIVATE -DTRILIBRARY -DANSI_DECLARATORS)
-if(WIN32)
-   target_compile_definitions(triangle PRIVATE -DNO_TIMER)
-endif()
+## generate variables with the sources
+set( TRIANGLE_SOURCES     
+ 	${CMAKE_CURRENT_SOURCE_DIR}/triangle.c
+     )
+
+##removing optimizations
+SET_SOURCE_FILES_PROPERTIES(${TRIANGLE_SOURCES} PROPERTIES COMPILE_FLAGS -O0)
+
+add_definitions( -DTRILIBRARY )
+
+#perform platform specific defintions
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    add_definitions( -DCPU86 )
+    add_definitions( -DNO_TIMER )
+else(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    add_definitions( -DLINUX )
+endif(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+
+
+###############################################################
+add_library(triangle STATIC ${TRIANGLE_SOURCES})
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+	target_link_libraries(triangle m)
+endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+
+# install(TARGETS triangle DESTINATION libs )
